@@ -4,7 +4,7 @@
 
 require("luci.sys")
 
-m = Map("suselogin", translate("轻化工校园网认证"), translate("自动连接网络,支持断线自动重连"))
+m = Map("suselogin", translate("山理工校园网认证"), translate("自动连接网络,支持断线自动重连"))
 
 s = m:section(TypedSection, "login", "")
 s.addremove = false
