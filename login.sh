@@ -47,15 +47,6 @@ function up(){
 	# Get referer page
 	local refererPage=`curl -s "http://www.google.cn/generate_204" | awk -F \' '{print $2}'`
 
-	# Structure loginURL
-	local loginURL=`echo $refererPage | awk -F \? '{print $1}'`
-	local loginURL="${loginURL/index.jsp/InterFace.do?method=login}"
-
-	# Structure queryString
-	local queryString=`echo $refererPage | awk -F \? '{print $2}'`
-	local queryString="${queryString//&/%2526}"
-	local queryString="${queryString//=/%253D}"
-
 	# Login
 	if [ -n "$loginURL" ]; then
 		curl -s -A "${ua}" \
