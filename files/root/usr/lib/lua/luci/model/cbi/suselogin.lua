@@ -13,9 +13,9 @@ s.anonymous = true
 enable = s:option(Flag, "enable", translate("启用"), translate("启用后即会检测上网状态，并尝试自动拨号"))
 enable.rmempty = false
 
-name = s:option(Value, "username", translate("用户名(学号)"))
+name = s:option(Value, "username", translate("用户名(手机号)"))
 name.rmempty = false
-pass = s:option(Value, "password", translate("密码(身份证后6位)"))
+pass = s:option(Value, "password", translate("密码(身份证后6位或123123)"))
 pass.password = true
 pass.rmempty = false
 
