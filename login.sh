@@ -13,7 +13,6 @@ enable=$(uci get suselogin.@login[0].enable)
 interval=$(($(uci get suselogin.@login[0].interval)*60)) # 把时间换算成秒
 username=$(uci get suselogin.@login[0].username)
 password=$(uci get suselogin.@login[0].password)
-isp=$(uci get suselogin.@login[0].isp)
 auto_offline=$(uci get suselogin.@login[0].auto_offline)
 
 
