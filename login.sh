@@ -48,27 +48,35 @@ function up(){
 	local refererPage=`curl -s "http://www.google.cn/generate_204" | awk -F \' '{print $2}'`
 
 	# Login
-	if [ -n "$loginURL" ]; then
-		curl -s -A "${ua}" \
-			-e "$refererPage" \
-			-b "EPORTAL_COOKIE_OPERATORPWD=; EPORTAL_AUTO_LAND=; EPORTAL_COOKIE_USERNAME=; EPORTAL_COOKIE_PASSWORD=; EPORTAL_COOKIE_SERVER=; EPORTAL_COOKIE_SERVER_NAME=; EPORTAL_COOKIE_DOMAIN=; EPORTAL_COOKIE_SAVEPASSWORD=false; EPORTAL_COOKIE_DOMAIN=false;" \
-			-d "userId=$username&password=$password&service=$isp&queryString=$queryString&operatorPwd=&operatorUserId=&validcode=&passwordEncrypt=false" \
-			-H "Accept: */*" \
-			-H "Content-Type: application/x-www-form-urlencoded; charset=UTF-8" \
-			-m 5 \
-			"$loginURL" > ${dir}login.log
-		wait
-	else
-		echo "$(date "+%Y-%m-%d %H:%M:%S"): 获取登录地址失败" >> ${logfile} && return
+	if isonline; then
+		echo "$(date "+%Y-%m-%d %H:%M:%S"): 您已连接到网络(hotplug)" >> ${logfile}
+		sleep 1 && return
 	fi
 
-	if isonline; then
-		ntpd -n -q -p ntp1.aliyun.com  # 登录成功后校准时间
-		wait # 等待校准时间完毕
-		echo "$(date "+%Y-%m-%d %H:%M:%S"): 登录成功!" >> ${logfile} && sleep 2 && return
+	# Get referer page
+	local refererPage=`curl -s "http://www.google.cn/generate_204" | awk -F \' '{print $2}'`
+
+
+	# Login
+	curl -m 5  https://www.baidu.com/ > baidu.com
+
+	check_status=`curl -I -m 5 -s -w "%{http_code}\n" -o /dev/null www.baidu.com`
+
+	echo $check_status
+
+	if [[ $check_status != 200  ]]
+
+	then
+
+   	 echo "Not signed in yet"
+   	 ip=$(ifconfig eth0 | grep 'inet addr:' | grep -oE '([0-9]{1,3}.){3}.[0-9]{1,3}' | head -n 1)
+
+   	 curl "http://111.17.200.130:801/eportal/portal/login?callback=dr1003&login_method=1&user_account=${username}&user_password=${password}&wlan_user_ip=${ip}&wlan_user_ipv6=&wlan_user_mac=000000000000&wlan_ac_ip=&wlan_ac_name=&jsVersion=4.2.1&terminal_type=1&lang=zh-cn&v=6915&lang=zh" \
+
 	else
-		echo -n "$(date "+%Y-%m-%d %H:%M:%S"): 登录失败,错误信息: " >> ${logfile}
-		echo "$(cat /tmp/log/suselogin/login.log)" >> ${logfile}
+
+ 	   echo "Already logged in"
+
 	fi
 }
 
