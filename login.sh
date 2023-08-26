@@ -62,7 +62,7 @@ function up(){
 
 	check_status=`curl -I -m 5 -s -w "%{http_code}\n" -o /dev/null www.baidu.com`
 
-	echo $check_status
+	echo $check_status >> ${logfile}
 
 	if [[ $check_status != 200  ]]
 
@@ -75,7 +75,7 @@ function up(){
 
 	else
 
- 	   echo "Already logged in"
+ 	   echo "Already logged in" >> ${logfile}
 
 	fi
 }
