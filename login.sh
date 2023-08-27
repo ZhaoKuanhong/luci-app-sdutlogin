@@ -3,17 +3,18 @@
 # Copyright 2020 BlackYau <blackyau426@gmail.com>
 # GNU General Public License v3.0
 
-dir="/tmp/log/suselogin/" && mkdir -p ${dir}
-logfile="${dir}suselogin.log"
+dir="/tmp/log/sdutlogin/" && mkdir -p ${dir}
+logfile="${dir}sdutlogin.log"
 pidpath=${dir}run.pid
 count=0
 ua="User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36"
-enable=$(uci get suselogin.@login[0].enable)
+enable=$(uci get sdutlogin.@login[0].enable)
 [ $enable -eq 0 ] && echo "$(date "+%Y-%m-%d %H:%M:%S"): 未启用,停止运行..." > ${logfile} && exit 0
-interval=$(($(uci get suselogin.@login[0].interval)*60)) # 把时间换算成秒
-username=$(uci get suselogin.@login[0].username)
-password=$(uci get suselogin.@login[0].password)
-auto_offline=$(uci get suselogin.@login[0].auto_offline)
+interval=$(($(uci get sdutlogin.@login[0].interval)*60)) # 把时间换算成秒
+username=$(uci get sdutlogin.@login[0].username)
+password=$(uci get sdutlogin.@login[0].password)
+isp=$(uci get sdutlogin.@login[0].isp)
+auto_offline=$(uci get sdutlogin.@login[0].auto_offline)
 
 
 # 获取已连接设备数
@@ -43,19 +44,6 @@ function up(){
 		sleep 1 && return
 	fi
 
-	# Get referer page
-	local refererPage=`curl -s "http://www.google.cn/generate_204" | awk -F \' '{print $2}'`
-
-	# Login
-	if isonline; then
-		echo "$(date "+%Y-%m-%d %H:%M:%S"): 您已连接到网络(hotplug)" >> ${logfile}
-		sleep 1 && return
-	fi
-
-	# Get referer page
-	local refererPage=`curl -s "http://www.google.cn/generate_204" | awk -F \' '{print $2}'`
-
-
 	# Login
 	curl -m 5  https://www.baidu.com/ > baidu.com
 
@@ -67,14 +55,14 @@ function up(){
 
 	then
 
-   	 echo "Not signed in yet"
+   	 echo "$(date "+%Y-%m-%d %H:%M:%S"):Not signed in yet" >> ${logfile}
    	 ip=$(ifconfig eth0 | grep 'inet addr:' | grep -oE '([0-9]{1,3}.){3}.[0-9]{1,3}' | head -n 1)
 
-   	 curl "http://111.17.200.130:801/eportal/portal/login?callback=dr1003&login_method=1&user_account=${username}&user_password=${password}&wlan_user_ip=${ip}&wlan_user_ipv6=&wlan_user_mac=000000000000&wlan_ac_ip=&wlan_ac_name=&jsVersion=4.2.1&terminal_type=1&lang=zh-cn&v=6915&lang=zh" \
+   	 curl "http://111.17.200.130:801/eportal/portal/login?callback=dr1003&login_method=1&user_account=${username}&user_password=${password}&wlan_user_ip=${ip}&wlan_user_ipv6=&wlan_user_mac=000000000000&wlan_ac_ip=&wlan_ac_name=&jsVersion=4.2.1&terminal_type=1&lang=zh-cn&v=6915&lang=zh" >> ${logfile} 2>&1
 
 	else
 
- 	   echo "Already logged in" >> ${logfile}
+ 	   echo "$(date "+%Y-%m-%d %H:%M:%S"):Already logged in" >> ${logfile}
 
 	fi
 }
