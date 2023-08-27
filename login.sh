@@ -59,8 +59,15 @@ function up(){
    	 ip=$(ifconfig eth0 | grep 'inet addr:' | grep -oE '([0-9]{1,3}.){3}.[0-9]{1,3}' | head -n 1)
 
    	 curl "http://111.17.200.130:801/eportal/portal/login?callback=dr1003&login_method=1&user_account=${username}&user_password=${password}&wlan_user_ip=${ip}&wlan_user_ipv6=&wlan_user_mac=000000000000&wlan_ac_ip=&wlan_ac_name=&jsVersion=4.2.1&terminal_type=1&lang=zh-cn&v=6915&lang=zh" >> ${logfile} 2>&1
+	fi
 
+	if isonline; then
+		ntpd -n -q -p ntp1.aliyun.com  # 登录成功后校准时间
+		wait # 等待校准时间完毕
+		echo "$(date "+%Y-%m-%d %H:%M:%S"): 登录成功!" >> ${logfile} && sleep 2 && return
 	else
+		echo -n "$(date "+%Y-%m-%d %H:%M:%S"): 登录失败,错误信息: " >> ${logfile}
+		echo "$(cat /tmp/log/suselogin/login.log)" >> ${logfile}
 
  	   echo "$(date "+%Y-%m-%d %H:%M:%S"):Already logged in" >> ${logfile}
 
