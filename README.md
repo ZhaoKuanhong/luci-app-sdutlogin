@@ -1,14 +1,9 @@
-# luci-app-suselogin
+# luci-app-sdutlogin
 
-适用于 [四川轻化工大学](http://www.suse.edu.cn/) [锐捷网络](http://www.ruijie.com.cn/) Web 网络认证系统，可以自动连接网络，也可以通过设定的时间检测网络连接状态并自动重连。
+适用于 山东理工大学dr.com Web 网络认证系统，可以自动连接网络，也可以通过设定的时间检测网络连接状态并自动重连。
 
-![插件主页截图](https://i.loli.net/2020/12/13/fgeaURwjbLT1odS.png)
+由luci-app-suselogin修改而来
 
-![插件运行日志截图](https://i.loli.net/2020/12/13/XQ7q1FagVTm6LrO.png)
-
-## 可用固件
-
-这是我编译好的，Newifi D2 路由器可用的固件 https://github.com/blackyau/make_lede/releases/tag/suse 。它内置了这个自动拨号的插件，还内置了 [Zxilly/UA2F](https://github.com/Zxilly/UA2F) 或 [CHN-beta/xmurp-ua](https://github.com/CHN-beta/xmurp-ua) 和 [CHN-beta/rkp-ipid](https://github.com/CHN-beta/rkp-ipid) 还有 NTP-Server TTL 之类的多种抗检测方案，可以防止多设备被封。目前看来 UA2F 要更胜一筹。
 
 ## 快速开始
 
