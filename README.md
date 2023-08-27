@@ -7,13 +7,13 @@
 
 ## 快速开始
 
-前往 Releases 下载已编译好的 ipk https://github.com/blackyau/luci-app-suselogin/releases/latest
+前往 Releases 下载已编译好的 ipk 
 
 在 OpenWrt - 系统 - 文件传输 选择该 ipk 点击上传，然后在下方安装。
 
 ![filetransfer](./filetransfer.jpg)
 
-安装完毕后在 网络 - SUSE Login 点击**启用**并填入**用户名**和**密码**选择你的**运营商**后点击右下方的**保存&应用**，查看日志当提示**登录成功**时说明已登录成功。
+安装完毕后在 网络 - SDUT Login 点击**启用**并填入**用户名**和**密码**后点击右下方的**保存&应用**，查看日志当提示**登录成功**时说明已登录成功。
 
 如果提示缺少依赖，那么还需要安装 `curl`，请使用 Xshell 之类的软件连接到路由器，然后执行以下命令安装 `curl` 。
 
@@ -38,21 +38,21 @@ git clone https://github.com/coolsnowwolf/lede
 cd lede
 ./scripts/feeds update -a
 ./scripts/feeds install -a
-git clone https://github.com/blackyau/luci-app-suselogin.git package/luci-app-suselogin
+git clone https://github.com/ZhaoKuanhong/luci-app-sdutlogin.git package/luci-app-sdutlogin
 make menuconfig
 ```
 
-在 make menuconfig 里面选好自己的机型，然后将 LuCI ---> Applications ---> luci-app-suselogin
+在 make menuconfig 里面选好自己的机型，然后将 LuCI ---> Applications ---> luci-app-sdutlogin
 
 选中，并将前面的复选框变为 `<M>` 再保存编译配置
 
 接下来开始单独编译该插件的 IPK
 
 ```shell
-make package/luci-app-suselogin/compile -j1 V=s
+make package/luci-app-sdutlogin/compile -j1 V=s
 ```
 
-编译后的 ipk 在 `bin/packages/` 目录内，同时也会有 `curl` 之类的依赖，如果你的固件已经装好了依赖就只需要拷贝安装 `luci-app-suselogin_X.X-X_all.ipk` 即可。
+编译后的 ipk 在 `bin/packages/` 目录内，同时也会有 `curl` 之类的依赖，如果你的固件已经装好了依赖就只需要拷贝安装 `luci-app-sdutlogin_X.X-X_all.ipk` 即可。
 
 ## 固件集成插件
 
@@ -60,14 +60,14 @@ make package/luci-app-suselogin/compile -j1 V=s
 
 ```shell
 cd lede/package  # 进入 OpenWrt 源码的 package 目录
-git clone https://github.com/blackyau/luci-app-suselogin.git  # 下载插件源码
+git clone https://github.com/blackyau/luci-app-sdutlogin.git  # 下载插件源码
 cd ..  # 返回 OpenWrt 源码主目录
 make menuconfig  # 进入编译设置菜单
 ```
 
-LuCI ---> Applications ---> luci-app-suselogin
+LuCI ---> Applications ---> luci-app-sdutlogin
 
-将其选中，使得复选框变为 `<*>` 再保存编译设置，随后正常编译即可。固件会自带 `luci-app-suselogin`
+将其选中，使得复选框变为 `<*>` 再保存编译设置，随后正常编译即可。固件会自带 `luci-app-sdutlogin`
 
 ```shell
 make -j8 download
@@ -78,15 +78,16 @@ make -j$(($(nproc) + 1)) V=s
 
 当插件设置为启用后，每隔指定的间隔时间，会检测登录状态，如果未连接到互联网则会尝试登录，同时还会检测当前在线设备数量并保存，如果这次检测的在线数量比上一次的多，就会自动下线并重新登录。
 
-发送登录请求返回数据: `/tmp/log/suselogin/login.log`
+发送登录请求返回数据: `/tmp/log/sdutlogin/login.log`
 
-完整日志: `/tmp/log/suselogin/suselogin.log`
+完整日志: `/tmp/log/suselogin/sdutlogin.log`
 
 
 ## TODO
 
 - [X] 函数式编程
 - [X] curl指定超时
+- [ ] 登出实现
 - [ ] 主脚本配置使用参数传入
 
 ## 参考
@@ -108,7 +109,7 @@ make -j$(($(nproc) + 1)) V=s
 - [Xavier Wang - 校园网禁止多终端共享上网解决方案](https://www.xavier.wang/post/45-suck-shit-lan/)
 
 ## License
-
+Copyright 2023 Faspand <ShiinaMashiro@live.jp>
 Copyright 2020 BlackYau <blackyau426@gmail.com>
 
 GNU General Public License v3.0
