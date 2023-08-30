@@ -19,6 +19,17 @@ pass = s:option(Value, "password", translate("密码(身份证后6位或123123)"
 pass.password = true
 pass.rmempty = false
 
+o8 =s:option(ListValue,"alternative",translate("备选账号"))
+o8 :value("1",translate("启用"))
+o8 :value("0",translate("禁用"))
+o8.default="0"
+
+o6 = s:option(Value, "username2", translate("备用账号"))
+o6:depends({alternative="1"})
+
+o7 = s:option(Value, "password2", translate("密码"))
+o7:depends({alternative="1"})
+o7.password = true
 
 interval = s:option(Value, "interval", translate("间隔时间"), translate("每隔多少时间(≥1)检测一下网络是否连接正常，如果网络异常则会尝试连接(单位:分钟)"))
 interval.default = 5
